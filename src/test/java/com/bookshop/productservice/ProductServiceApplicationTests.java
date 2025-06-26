@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 
+import org.springframework.security.test.context.support.WithMockUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -16,6 +17,7 @@ class ProductServiceApplicationTests {
     @Autowired
     private WebTestClient webTestClient;
 
+    @WithMockUser
     @Test
     void whenGetRequestWithIdThenBookReturned() {
         var bookIsbn = "1231231230";
@@ -40,6 +42,7 @@ class ProductServiceApplicationTests {
                 });
     }
 
+    @WithMockUser
     @Test
     void whenPostRequestThenBookCreated() {
         var expectedBook = new Book("1231231231", "Title", "Author", 9.90);
@@ -56,6 +59,7 @@ class ProductServiceApplicationTests {
                 });
     }
 
+    @WithMockUser
     @Test
     void whenPutRequestThenBookUpdated() {
         var bookIsbn = "1231231232";
@@ -82,6 +86,7 @@ class ProductServiceApplicationTests {
                 });
     }
 
+    @WithMockUser
     @Test
     void whenDeleteRequestThenBookDeleted() {
         var bookIsbn = "1231231233";
