@@ -25,18 +25,19 @@ repositories {
 
 dependencies {
     //implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
-    implementation("org.springframework.boot:spring-boot-starter-security")
+    //implementation("org.springframework.boot:spring-boot-starter-security")
+    //implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation ("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     //runtimeOnly("org.postgresql:postgresql:42.7.3")
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    //annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation ("org.springframework.boot:spring-boot-starter-webflux")
-    testImplementation("org.springframework.security:spring-security-test")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    //testImplementation("org.springframework.security:spring-security-test")
+    //testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     //testImplementation ("org.testcontainers:postgresql")
 }
 
