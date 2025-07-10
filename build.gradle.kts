@@ -39,9 +39,13 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation ("org.springframework.cloud:spring-cloud-starter-config")
     implementation ("org.springframework.retry:spring-retry")
+    implementation("org.flywaydb:flyway-core")
+
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("org.postgresql:postgresql")
+    // ⬇️ 추가: PostgreSQL 지원 모듈 (runtimeOnly 권장)
+    runtimeOnly("org.flywaydb:flyway-database-postgresql") //Flyway 10.x부터는 flyway-core 만으로는 각 DB를 지원하지 않고, 별도 아티팩트를 추가해야 해요.
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
