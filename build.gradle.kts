@@ -64,3 +64,10 @@ tasks.withType<Test> {
 tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
     systemProperty("spring.profiles.active", "testdata")
 }
+testing {
+    suites {
+        val test by getting(JvmTestSuite::class) {
+            useJUnitJupiter("5.10.2")   // 프레임워크와 버전을 한 번에 지정
+        }
+    }
+}
