@@ -10,6 +10,5 @@ server:
 
 
 
-
 polar:
-  greeting: Welcome to the local book catalog!
+  greeting: Welcome to the local book catalog(dev)!

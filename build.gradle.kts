@@ -1,19 +1,26 @@
 plugins {
     java
-    id("org.springframework.boot") version "3.4.4"          // 안정판
+    id("org.springframework.boot") version "3.3.1"          // 안정판
     id("io.spring.dependency-management") version "1.1.5"   // 릴리스 버전
 }
 
 group = "com.bookshop"
 version = "0.0.1-SNAPSHOT"
+extra.set("testcontainersVersion", "1.19.8")
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
 }
+dependencyManagement {// 책에서는 없으나... 클라우드 디펜던시가 필요했음
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:2023.0.1") // 예시: 호환되는 최신 버전
+        mavenBom("org.testcontainers:testcontainers-bom:${property("testcontainersVersion")}")
+    }
+}
 
-configurations {
+configurations {//프로젝트 빌드 시 그래들이 설정 프로세서를 이용하도록 설정한다.
     compileOnly {
         extendsFrom(configurations.annotationProcessor.get())
     }
@@ -24,21 +31,24 @@ repositories {
 }
 
 dependencies {
-    //implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
+    implementation("org.springframework.data:spring-data-commons")
+    implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     //implementation("org.springframework.boot:spring-boot-starter-security")
-    //implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation ("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation ("org.springframework.cloud:spring-cloud-starter-config")
+    implementation ("org.springframework.retry:spring-retry")
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
-    //runtimeOnly("org.postgresql:postgresql:42.7.3")
-    //annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    runtimeOnly("org.postgresql:postgresql")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation ("org.springframework.boot:spring-boot-starter-webflux")
     //testImplementation("org.springframework.security:spring-security-test")
     //testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    //testImplementation ("org.testcontainers:postgresql")
+    testImplementation ("org.testcontainers:postgresql")
 }
 
 
