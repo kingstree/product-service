@@ -16,7 +16,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 @DataJdbcTest // jdbc를 컴포넌트를 집중 테스트 함을 선언
 @Import(DataConfig.class) //데이터 설정을 임포트한다 (감사를 활성화하기 위해 사용)
 @AutoConfigureTestDatabase( //데이터 컨테이너를 이용하기때문에 내장 테스트 데이터베이스 사용을 비활성화 한다.
@@ -28,12 +27,12 @@ class BookRepositoryJdbcTests {
     private BookRepository bookRepository;
 
     @Autowired
-    private JdbcAggregateTemplate jdbcAggregateTemplate;
+    private JdbcAggregateTemplate jdbcAggregateTemplate; // 데이터베이스와 상호작용하기 위한 하위 수준의 객체
 
     @Test
     void findAllBooks() {
-        var book1 = Book.of("1234561235", "Title", "Author", 12.90);
-        var book2 = Book.of("1234561236", "Another Title", "Author", 12.90);
+        var book1 = Book.of("1234561235", "Title", "Author", 12.90, "Polarsophia");
+        var book2 = Book.of("1234561236", "Another Title", "Author", 12.90, "Polarsophia");
         jdbcAggregateTemplate.insert(book1);
         jdbcAggregateTemplate.insert(book2);
 
@@ -47,7 +46,7 @@ class BookRepositoryJdbcTests {
     @Test
     void findBookByIsbnWhenExisting() {
         var bookIsbn = "1234561237";
-        var book = Book.of(bookIsbn, "Title", "Author", 12.90);
+        var book = Book.of(bookIsbn, "Title", "Author", 12.90, "Polarsophia");
         jdbcAggregateTemplate.insert(book);
 
         Optional<Book> actualBook = bookRepository.findByIsbn(bookIsbn);
@@ -65,7 +64,7 @@ class BookRepositoryJdbcTests {
     @Test
     void existsByIsbnWhenExisting() {
         var bookIsbn = "1234561239";
-        var bookToCreate = Book.of(bookIsbn, "Title", "Author", 12.90);
+        var bookToCreate = Book.of(bookIsbn, "Title", "Author", 12.90, "Polarsophia");
         jdbcAggregateTemplate.insert(bookToCreate);
 
         boolean existing = bookRepository.existsByIsbn(bookIsbn);
@@ -82,13 +81,12 @@ class BookRepositoryJdbcTests {
     @Test
     void deleteByIsbn() {
         var bookIsbn = "1234561241";
-        var bookToCreate = Book.of(bookIsbn, "Title", "Author", 12.90);
+        var bookToCreate = Book.of(bookIsbn, "Title", "Author", 12.90, "Polarsophia");
         var persistedBook = jdbcAggregateTemplate.insert(bookToCreate);
 
         bookRepository.deleteByIsbn(bookIsbn);
 
         assertThat(jdbcAggregateTemplate.findById(persistedBook.id(), Book.class)).isNull();
     }
-
 
 }
