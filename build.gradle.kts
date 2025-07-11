@@ -71,3 +71,8 @@ testing {
         }
     }
 }
+
+// Spring Boot Layered Jar 지원 설정 (Spring Boot 2.3 이상)
+/*tasks.named<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
+    layered
+}*/
