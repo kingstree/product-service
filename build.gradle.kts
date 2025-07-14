@@ -1,6 +1,6 @@
 plugins {
     java
-    id("org.springframework.boot") version "3.3.1"          // 안정판
+    id("org.springframework.boot") version "3.5.3"          // 안정판
     id("io.spring.dependency-management") version "1.1.5"   // 릴리스 버전
 }
 
@@ -15,8 +15,10 @@ java {
 }
 dependencyManagement {// 책에서는 없으나... 클라우드 디펜던시가 필요했음
     imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:2023.0.1") // 예시: 호환되는 최신 버전
+        mavenBom("org.springframework.boot:spring-boot-dependencies:3.3.1")
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:2023.0.1")
         mavenBom("org.testcontainers:testcontainers-bom:${property("testcontainersVersion")}")
+
     }
 }
 
@@ -65,8 +67,10 @@ tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
     systemProperty("spring.profiles.active", "testdata")
 }
 tasks.bootBuildImage {
-    builder.set("docker.io/paketobuildpacks/builder-jammy-base")
+    builder.set("paketobuildpacks/builder-jammy-java-tiny:0.0.46")
+    imagePlatform.set("linux/arm64")
     imageName.set(project.name)
+    imageName.set("ghcr.io/kingstree/product-service:latest")   // ★ 레지스트리·계정 포함
     environment.put("BP_JVM_VERSION", "17")
 
     docker {
