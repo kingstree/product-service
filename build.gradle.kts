@@ -64,6 +64,20 @@ tasks.withType<Test> {
 tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
     systemProperty("spring.profiles.active", "testdata")
 }
+tasks.bootBuildImage {
+    builder.set("docker.io/paketobuildpacks/builder-jammy-base")
+    imageName.set(project.name)
+    environment.put("BP_JVM_VERSION", "17")
+
+    docker {
+        publishRegistry {
+            username = project.findProperty("registryUsername") as String?
+            password = project.findProperty("registryToken") as String?
+            url = project.findProperty("registryUrl") as String?
+        }
+    }
+}
+
 testing {
     suites {
         val test by getting(JvmTestSuite::class) {
@@ -71,8 +85,3 @@ testing {
         }
     }
 }
-
-// Spring Boot Layered Jar 지원 설정 (Spring Boot 2.3 이상)
-/*tasks.named<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
-    layered
-}*/
