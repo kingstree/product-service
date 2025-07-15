@@ -23,6 +23,11 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: gradle
+      - name: Validate Kubernetes manifests with kubeconform
+        uses: docker://ghcr.io/yannh/kubeconform:latest
+        with:
+          entrypoint: kubeconform
+          args: -strict -summary -ignore-missing-schemas -recursive ./k8s
       - name: Build, unit tests and integration tests
         run: |
           chmod +x gradlew
