@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment # 파드에 배포될 애플리케이션 임을 뜻함
+metadata:
+  name: product-service
+  labels:
+    app: product-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: product-service
+  template:
+    metadata:
+      labels:
+        app: product-service
+    spec:
+      containers:
+        - name: product-service
+          image: product-service
+          imagePullPolicy: IfNotPresent
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sh", "-c", "sleep 5" ]
+          ports:
+            - containerPort: 9001
+          env:
+            - name: BPL_JVM_THREAD_COUNT
+              value: "50"
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: http://config-service
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://product-postgres/bookshopdb_product
+            - name: SPRING_PROFILES_ACTIVE
+              value: testdata

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service #배포된 애플리케이션에 연결해줄 서비스를 의미함 (DNS.포트 바인드)
+metadata:
+  name: product-service
+  labels:
+    app: product-service
+spec:
+  type: ClusterIP
+  selector:
+    app: product-service
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 9001
