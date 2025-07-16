@@ -30,6 +30,6 @@ spec:
             - name: SPRING_CLOUD_CONFIG_URI
               value: http://config-service
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://product-postgres/bookshopdb_product
+              value: jdbc:postgresql://bookshop-postgres/bookshopdb_product
             - name: SPRING_PROFILES_ACTIVE
               value: testdata
