@@ -6,8 +6,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-
-public interface BookRepository extends CrudRepository<Book,Long> {
+//CrudRepository를 상속
+public interface BookRepository extends CrudRepository<Book,Long> {//엔티티 유형(Book), 기본키 유형(Long)을 지정하면서 CRUD 연산을 제공하는 레포지터리를 확장한다 (상속받음)
 /*
 	Iterable<Book> findAll();
 	Optional<Book> findByIsbn(String isbn);
