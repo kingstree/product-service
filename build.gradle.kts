@@ -7,20 +7,15 @@ plugins {
 group = "com.bookshop"
 version = "0.0.1-SNAPSHOT"
 extra.set("testcontainersVersion", "1.19.8")
+extra.set("springCloudVersion", "2021.0.9")
+extra.set("testKeycloakVersion", "3.3.1")
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
 }
-dependencyManagement {// 책에서는 없으나... 클라우드 디펜던시가 필요했음
-    imports {
-        mavenBom("org.springframework.boot:spring-boot-dependencies:3.3.1")
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:2023.0.1")
-        mavenBom("org.testcontainers:testcontainers-bom:${property("testcontainersVersion")}")
 
-    }
-}
 
 configurations {//프로젝트 빌드 시 그래들이 설정 프로세서를 이용하도록 설정한다.
     compileOnly {
@@ -40,8 +35,12 @@ dependencies {
     implementation ("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation ("org.springframework.cloud:spring-cloud-starter-config")
+    //outh2리소스 서버 의존성 추가
+    implementation ("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+
     implementation ("org.springframework.retry:spring-retry")
     implementation("org.flywaydb:flyway-core")
+    implementation("org.springframework.boot:spring-boot-starter-security")
 
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -55,9 +54,21 @@ dependencies {
     //testImplementation("org.springframework.security:spring-security-test")
     //testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation ("org.testcontainers:postgresql")
+    testImplementation ("org.springframework.security:spring-security-test")
+    testImplementation ("org.testcontainers:junit-jupiter")
+    testImplementation ("org.testcontainers:postgresql")
+    //테스트 컨테이너에 기반한 키클록테스트 유틸리티 제공
+    testImplementation ("com.github.dasniko:testcontainers-keycloak:${property("testKeycloakVersion")}")
 }
 
+dependencyManagement {// 책에서는 없으나... 클라우드 디펜던시가 필요했음
+    imports {
+        mavenBom("org.springframework.boot:spring-boot-dependencies:3.3.1")
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:2023.0.1")
+        mavenBom("org.testcontainers:testcontainers-bom:${property("testcontainersVersion")}")
 
+    }
+}
 
 tasks.withType<Test> {
     useJUnitPlatform()
@@ -68,9 +79,9 @@ tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
 }
 tasks.bootBuildImage {
     builder.set("paketobuildpacks/builder-jammy-java-tiny:0.0.46")
-    imagePlatform.set("linux/arm64")
+   // imagePlatform.set("linux/arm64")
     imageName.set(project.name)
-    imageName.set("ghcr.io/kingstree/product-service:latest")   // ★ 레지스트리·계정 포함
+    //imageName.set("ghcr.io/kingstree/${project.name}:latest")   // ★ 레지스트리·계정 포함
     environment.put("BP_JVM_VERSION", "17")
 
     docker {
