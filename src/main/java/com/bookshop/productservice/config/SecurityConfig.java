@@ -5,7 +5,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
@@ -24,7 +23,9 @@ public class SecurityConfig {
 						//.anyRequest().authenticated(); //이외 다른 요청은 인증이 필요하다.
 						.anyRequest().hasRole("employee")
 				)
-				.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt) // jwt에 기반한 기본 설정을 사용해 OAth2 리소스 서버 지원을 활성화 한다.
+				.oauth2ResourceServer(resourceServer ->
+						resourceServer.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
+				)
 				.sessionManagement(sessionManagement ->//각 요청은 액세스 토큰을 가지고 있어야 하는데, 그래야만 사용자는 요청 간 사용자 세션을 계속 유지할 수 있다.(상태를 갖지 않길 원함)
 						sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.csrf(AbstractHttpConfigurer::disable)//인증 전략이 상태를 가지지 않고 브라우저 기반 클라이언트가 관여되지 않기 때문에 CSRF 보호는 비활성화해도 된다.
