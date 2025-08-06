@@ -15,9 +15,10 @@ spring:
   lifecycle:
     timeout-per-shutdown-phase: 15s
   config:
-    import: "optional:configserver:"
+    import: "" # "optional:configserver:"
   cloud:
     config:
+      enabled: false # When using Config Service, set to true 쉬운 작업을 위해!
       uri: http://localhost:8888
       request-connect-timeout: 5000 # 5s
       request-read-timeout: 5000 # 5s
@@ -27,10 +28,8 @@ spring:
         initial-interval: 1000 # 1s
         max-interval: 2000 # 2s
         multiplier: 1.1
-  sql: #sql 스크립트에서 데이터 베이스 스키마 초기화
-    init:
-      mode: always
-
+  profiles:
+    active: test-data
   datasource:
     username: postgres
     password: postgres
@@ -43,11 +42,27 @@ spring:
       resourceserver:
         jwt: #OAuth2는 액세스 토큰에 대한 데이터 형식을 강제로 규정핮 ㅣ않기에 명시적으로 지정해야 함 (지금은 jwt로 사용)
           issuer-uri: http://localhost:8080/realms/bookshop
-management:
+management: # 액츄에이터 기능 설정
   endpoints:
     web:
       exposure:
-        include: refresh
+        include: configprops, env, flyway, health, heapdump, info, loggers, mappings, prometheus
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+      probes: # 상태 프로브 지원 활성
+        enabled: true
+  info:
+    env:
+      enabled: true
+    java:
+      enabled: true
+    os:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
 
 
 polar:

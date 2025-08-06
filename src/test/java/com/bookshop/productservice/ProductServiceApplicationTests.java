@@ -41,13 +41,13 @@ class ProductServiceApplicationTests {
     @DynamicPropertySource//키클록 발행자 URI가 테스트 키클록 인스턴스를 가리키도록 변경
     static void dynamicProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.security.oauth2.resourceserver.jwt.issuer-uri",
-                () -> keycloakContainer.getAuthServerUrl() + "/realms/PolarBookshop");
+                () -> keycloakContainer.getAuthServerUrl() + "/realms/bookshop");
     }
 
     @BeforeAll//테스트 액세스 토큰을 얻디 위한 설정
     static void generateAccessTokens() {
         WebClient webClient = WebClient.builder()
-                .baseUrl(keycloakContainer.getAuthServerUrl() + "/realms/PolarBookshop/protocol/openid-connect/token")
+                .baseUrl(keycloakContainer.getAuthServerUrl() + "/realms/bookshop/protocol/openid-connect/token")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .build();
 

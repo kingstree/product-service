@@ -23,11 +23,6 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: gradle
-      #- name: Validate Kubernetes manifests with kubeconform
-      #  uses: docker://ghcr.io/yannh/kubeconform:latest
-      #  with:
-      #    entrypoint: kubeconform
-      #    args: -strict -summary -ignore-missing-schemas -recursive ./k8s
       - name: Build, unit tests and integration tests
         run: |
           chmod +x gradlew
@@ -44,6 +39,16 @@ jobs:
         if: success() || failure()
         with:
           sarif_file: ${{ steps.scan.outputs.sarif }}
+      - name: Setup tools
+        uses: alexellis/setup-arkade@v3
+      - name: Install tools
+        uses: alexellis/arkade-get@master
+        with:
+          kustomize: latest
+          kubeconform: latest
+      - name: Validate Kubernetes manifests
+        run: |
+          kustomize build k8s | kubeconform --strict -
   package:
     name: Package and Publish
     if: ${{ github.ref == 'refs/heads/main' }}

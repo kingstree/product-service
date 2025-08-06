@@ -9,6 +9,7 @@ version = "0.0.1-SNAPSHOT"
 extra.set("testcontainersVersion", "1.19.8")
 extra.set("springCloudVersion", "2021.0.9")
 extra.set("testKeycloakVersion", "3.3.1")
+extra.set("otelVersion", "1.33.3")
 
 java {
     toolchain {
@@ -31,6 +32,7 @@ dependencies {
     implementation("org.springframework.data:spring-data-commons")
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     //implementation("org.springframework.boot:spring-boot-starter-security")
+    //모니터링과 관리를 위한 액추에이터 의존성 추화
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation ("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -45,6 +47,8 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("org.postgresql:postgresql")
+    runtimeOnly ("io.micrometer:micrometer-registry-prometheus")
+    runtimeOnly ("io.opentelemetry.javaagent:opentelemetry-javaagent:${property("otelVersion")}")
     // ⬇️ 추가: PostgreSQL 지원 모듈 (runtimeOnly 권장)
     runtimeOnly("org.flywaydb:flyway-database-postgresql") //Flyway 10.x부터는 flyway-core 만으로는 각 DB를 지원하지 않고, 별도 아티팩트를 추가해야 해요.
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
@@ -79,7 +83,7 @@ tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
 }
 tasks.bootBuildImage {
     builder.set("paketobuildpacks/builder-jammy-java-tiny:0.0.46")
-   // imagePlatform.set("linux/arm64")
+    //imagePlatform.set("linux/arm64")
     imageName.set(project.name)
     //imageName.set("ghcr.io/kingstree/${project.name}:latest")   // ★ 레지스트리·계정 포함
     environment.put("BP_JVM_VERSION", "17")

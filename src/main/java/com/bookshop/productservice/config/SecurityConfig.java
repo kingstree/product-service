@@ -18,6 +18,7 @@ public class SecurityConfig {
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http
 				.authorizeHttpRequests(authorize -> authorize
+						.requestMatchers("/actuator/**").permitAll() //엑추에이터 엔드포인트에 인증되지 않은 액세스를 허용한다.
 						//.mvcMatchers(HttpMethod.GET, "/", "/books/**").permitAll() 시큐리티 6.x 부터는 지원 x
 						.requestMatchers(HttpMethod.GET, "/", "/books/**").permitAll() //인증하지 않고도 인사말과 책의 정보를 제공하도록 허용한다.
 						//.anyRequest().authenticated(); //이외 다른 요청은 인증이 필요하다.
