@@ -32,10 +32,10 @@ class BookControllerMvcTests {
     private static final String ROLE_CUSTOMER = "ROLE_customer";
 
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    ObjectMapper objectMapper;
 
     @MockBean
     BookService bookService;
