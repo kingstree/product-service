@@ -54,7 +54,7 @@ class ProductServiceApplicationTests {
         isabelleTokens = authenticateWith("isabelle", "password", webClient);
         bjornTokens = authenticateWith("bjorn", "password", webClient);
     }
-/*
+
     @Test
     void whenGetRequestWithIdThenBookReturned() {
         var bookIsbn = "1231231230";
@@ -79,7 +79,7 @@ class ProductServiceApplicationTests {
                     assertThat(actualBook.isbn()).isEqualTo(expectedBook.isbn());
                 });
     }
-*/
+
     @Test
     void whenPostRequestThenBookCreated() {
         var expectedBook = Book.of("1231231231", "Title", "Author", 9.90, "Polarsophia");
@@ -108,7 +108,7 @@ class ProductServiceApplicationTests {
                 .exchange()
                 .expectStatus().isUnauthorized();
     }
-/*
+
     @Test
     void whenPostRequestUnauthorizedThen403() {
         var expectedBook = Book.of("1231231231", "Title", "Author", 9.90, "Polarsophia");
@@ -121,7 +121,7 @@ class ProductServiceApplicationTests {
                 .exchange()
                 .expectStatus().isForbidden();
     }
-*/
+
 
     @Test
     void whenPutRequestThenBookUpdated() {
@@ -152,7 +152,7 @@ class ProductServiceApplicationTests {
                     assertThat(actualBook.price()).isEqualTo(bookToUpdate.price());
                 });
     }
-/*
+
     @Test
     void whenDeleteRequestThenBookDeleted() {
         var bookIsbn = "1231231233";
@@ -181,7 +181,7 @@ class ProductServiceApplicationTests {
                         assertThat(errorMessage).isEqualTo("The book with ISBN " + bookIsbn + " was not found.")
                 );
     }
-*/
+
     private static KeycloakToken authenticateWith(String username, String password, WebClient webClient) {
         return webClient
                 .post()
