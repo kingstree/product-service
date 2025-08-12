@@ -68,3 +68,9 @@ management: # 액츄에이터 기능 설정
 
 polar:
   greeting: Welcome to the local book catalog!
+
+#logging:
+#  level:
+#    org.springframework.security: DEBUG
+#    org.springframework.web: DEBUG
+#    reactor.netty: DEBUG

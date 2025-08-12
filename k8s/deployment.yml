@@ -1,27 +1,27 @@
-apiVersion: apps/v1
+apiVersion: apps/v1 # 배포 객체에 대한 API 버전
 kind: Deployment # 파드에 배포될 애플리케이션 임을 뜻함
 metadata:
-  name: product-service
-  labels:
-    app: product-service
+  name: product-service # 배포이름
+  labels: #배포에 추가할 레이블 집합
+    app: product-service #이 배포는 app=product-service라는 레이블을 갖는다.
 spec:
-  replicas: 1
-  selector:
+  replicas: 1 # 몇 개의 파드 복제본을 배포할 것인지 설정
+  selector: # 확장할 파드를 선택하기 위해 사용할 레이블을 정의한다.
     matchLabels:
       app: product-service
-  template:
+  template: # 파드 생성을 위한 탬플릿
     metadata:
-      labels:
+      labels: # 파드 객체에 추가되는 레이블. 레이블은 실렉터로 사용하는것돠 일치해야 한다.
         app: product-service
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/path: /actuator/prometheus
         prometheus.io/port: "9001"
     spec:
-      containers:
-        - name: product-service
-          image: product-service
-          imagePullPolicy: IfNotPresent
+      containers: #파드 내 컨테이너 목록
+        - name: product-service # 파드명
+          image: product-service # 컨테이너가 실행하기 위해 사용할 이미지. 태그가 정의되어있지 않으먄 latest가 암묵적 사용
+          imagePullPolicy: IfNotPresent # 이미지가 로컬에 없는 경우만 컨테이너 저장소에서 이미지를 받도록 설정
           lifecycle:
             preStop:
               exec:
