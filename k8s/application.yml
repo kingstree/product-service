@@ -1,5 +1,5 @@
 polar:
-  greeting: Welcome to the book catalog from a development Kubernetes environment!
+  greeting: Welcome to the book product from a development Kubernetes environment!
 spring:
   datasource:
     url: jdbc:postgresql://bookshop-postgres/bookshopdb_product
@@ -7,4 +7,4 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://bookshop-keycloak/realms/Bookshop
+          issuer-uri: http://bookshop-keycloak/realms/bookshop
